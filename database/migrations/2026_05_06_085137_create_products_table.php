@@ -13,10 +13,16 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade'); // Relasi ke kategori
-            $table->integer('stock');
-            $table->string('unit'); // pcs, pack, dll.
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->integer('stock')->default(0);
+            $table->integer('min_stock')->nullable()->default(0); // Tambah ini
+            $table->string('unit');
             $table->decimal('price', 15, 2);
+            $table->decimal('purchase_price', 15, 2)->nullable(); // Tambah ini
+            $table->string('weight')->nullable(); // Tambah ini
+            $table->string('location')->nullable(); // Tambah ini
+            $table->text('description')->nullable(); // Tambah ini
+            $table->string('image')->nullable(); // Tambah ini
             $table->timestamps();
         });
     }

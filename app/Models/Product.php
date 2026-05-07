@@ -9,7 +9,20 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id', 'stock', 'unit', 'price'];
+    // Tambahkan kolom baru di sini agar bisa disimpan (Mass Assignment)
+    protected $fillable = [
+        'name', 
+        'category_id', 
+        'stock', 
+        'min_stock', // Tambahan
+        'unit', 
+        'price', 
+        'purchase_price', // Tambahan
+        'weight', // Tambahan (Berat/ukuran)
+        'location', // Tambahan (Lokasi Simpan)
+        'description', // Tambahan
+        'image' // Tambahan (Foto Barang)
+    ];
 
     // Relasi ke Category
     public function category()
