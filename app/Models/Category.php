@@ -10,7 +10,7 @@ class Category extends Model
     use HasFactory;
 
     // Menentukan kolom mana saja yang boleh diisi
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
 
     /**
      * Relasi ke Product (Satu kategori memiliki banyak produk)
