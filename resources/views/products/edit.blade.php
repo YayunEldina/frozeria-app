@@ -16,34 +16,62 @@
             @csrf
             @method('PUT')
 
-            {{-- Area Upload Foto (Dibuat Persis Tambah Barang) --}}
-            <div class="space-y-2">
-                <label class="text-sm font-medium text-gray-700 tracking-wider">Foto barang</label>
-                <div x-data="{ fileName: null, previewUrl: '{{ $product->image ? asset('storage/' . $product->image) : '' }}' }" 
-                     class="border-2 border-dashed border-gray-300 p-10 text-center relative hover:bg-gray-50 transition w-full">
-                    
-                    <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
-                           @change="fileName = $event.target.files[0].name; previewUrl = URL.createObjectURL($event.target.files[0])">
-                    
-                    <div class="space-y-3">
-                        {{-- Preview Gambar --}}
-                        <div class="flex justify-center">
-                            <template x-if="previewUrl">
-                                <img :src="previewUrl" class="h-32 w-32 object-cover border border-gray-200">
-                            </template>
-                            <template x-if="!previewUrl">
-                                <svg class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </template>
-                        </div>
-                        
-                        <p class="text-sm text-gray-600" x-text="fileName ? fileName : 'Klik untuk mengganti foto, atau seret file ke sini'"></p>
-                        <p class="text-xs text-gray-400">Format: JPG, PNG — Maks. 2 MB</p>
-                        <button type="button" class="border border-gray-300 px-4 py-1.5 text-xs font-medium bg-white">Pilih Foto</button>
-                    </div>
-                </div>
+            {{-- Area Upload Foto --}}
+<div class="space-y-2">
+    <label class="text-sm font-medium text-gray-700 tracking-wider">Foto barang</label>
+    
+    <div x-data="{ 
+            fileName: null, 
+            previewUrl: '{{ $product->image ? asset('storage/' . $product->image) : '' }}' 
+         }" 
+         class="border-2 border-dashed border-gray-300 p-10 text-center relative hover:bg-gray-50 transition w-full min-h-[250px] flex flex-col items-center justify-center">
+        
+        {{-- Input File --}}
+        <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+               @change="
+                if ($event.target.files.length > 0) {
+                    fileName = $event.target.files[0].name;
+                    const reader = new FileReader();
+                    reader.onload = (e) => { previewUrl = e.target.result };
+                    reader.readAsDataURL($event.target.files[0]);
+                }
+               ">
+        
+        <div class="space-y-3">
+            {{-- 1. Preview Gambar (Muncul jika ada foto lama ATAU foto baru) --}}
+            <div class="flex flex-col items-center gap-2">
+                <template x-if="previewUrl">
+                    <img :src="previewUrl" class="max-h-32 object-contain border border-gray-200 shadow-sm rounded bg-white">
+                </template>
+                
+                {{-- Icon jika benar-benar tidak ada gambar sama sekali --}}
+                <template x-if="!previewUrl">
+                    <svg class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </template>
+
+                {{-- 2. Nama File (Hanya muncul jika user memilih file BARU) --}}
+                <template x-if="fileName">
+                    <p class="text-xs text-gray-400 font-normal mt-1" x-text="fileName"></p>
+                </template>
             </div>
+
+            {{-- 3. Teks Instruksi & Format (Selalu Ada) --}}
+            <div class="space-y-1">
+                <p class="text-sm text-gray-600">Klik untuk mengganti foto, atau seret file ke sini</p>
+                <p class="text-xs text-gray-400">Format: JPG, PNG — Maks. 2 MB</p>
+            </div>
+
+            {{-- 4. Tombol Visual --}}
+            <div class="pt-2">
+                <button type="button" class="border border-gray-300 px-4 py-1.5 text-xs font-medium bg-white hover:bg-gray-50 tracking-wider">
+                    Pilih Foto
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
             {{-- Grid Input --}}
             <div class="grid grid-cols-2 gap-6">

@@ -15,13 +15,13 @@
             <a href="{{ route('products.edit', $product->id) }}" class="border border-blue-400 text-blue-600 px-6 py-1.5 text-sm hover:bg-blue-50">
                 Edit Barang
             </a>
-            <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="border border-red-300 text-red-500 px-6 py-1.5 text-sm hover:bg-red-50">
-                    Hapus
-                </button>
-            </form>
+            <button 
+                type="button" 
+                @click="$dispatch('open-delete-modal', { id: {{ $product->id }}, name: '{{ $product->name }}' })"
+                class="border border-red-300 text-red-500 px-6 py-1.5 text-sm hover:bg-red-50 transition"
+            >
+                Hapus
+            </button>
         </div>
     </div>
 
@@ -85,4 +85,8 @@
         </div>
     </div>
 </div>
+
+{{-- Memanggil Modal Hapus Produk --}}
+@include('products._delete_modal')
+
 @endsection

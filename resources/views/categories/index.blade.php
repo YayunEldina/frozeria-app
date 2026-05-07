@@ -31,26 +31,27 @@
                     <td class="px-6 py-4 text-sm text-gray-600">{{ $category->products_count }} barang</td>
                     <td class="px-6 py-4 text-sm text-gray-500">{{ $category->created_at->format('j M Y') }}</td>
                     <td class="px-6 py-4 flex gap-2">
-    {{-- UBAH BAGIAN INI: Dari href="#" menjadi route edit --}}
-    <a href="{{ route('categories.edit', $category->id) }}" 
-       class="border border-blue-300 text-blue-600 px-4 py-1 text-xs hover:bg-blue-50">
-       Edit
-    </a>
-    
-    {{-- Tombol Hapus tetap seperti sebelumnya --}}
-    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" 
-          onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori {{ $category->name }}?')">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="border border-red-300 text-red-500 px-4 py-1 text-xs hover:bg-red-50">
-            Hapus
-        </button>
-    </form>
-</td>
+                        {{-- Tombol Edit --}}
+                        <a href="{{ route('categories.edit', $category->id) }}" 
+                           class="border border-blue-300 text-blue-600 px-4 py-1 text-xs hover:bg-blue-50 transition">
+                            Edit
+                        </a>
+                        
+                        {{-- PEMBARUAN: Tombol Hapus memicu Modal Alpine.js --}}
+                        <button 
+                            type="button"
+                            @click="$dispatch('open-delete-category-modal', { id: {{ $category->id }}, name: '{{ $category->name }}' })"
+                            class="border border-red-300 text-red-500 px-4 py-1 text-xs hover:bg-red-50 transition"
+                        >
+                            Hapus
+                        </button>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="px-6 py-10 text-center text-gray-400 italic">Belum ada kategori terdaftar.</td>
+                    <td colspan="4" class="px-6 py-10 text-center text-gray-400 italic font-light">
+                        Belum ada kategori terdaftar.
+                    </td>
                 </tr>
                 @endforelse
             </tbody>
@@ -60,4 +61,8 @@
         </div>
     </div>
 </div>
+
+{{-- Sertakan Modal di paling bawah --}}
+@include('categories._delete_modal')
+
 @endsection
