@@ -125,6 +125,12 @@ public function update(Request $request, Product $product)
     return redirect()->route('products.index')->with('success', 'Barang berhasil diperbarui!');
 }
 
+public function show(Product $product)
+{
+    // Mengarahkan ke file detail (show.blade.php) dengan membawa data produk
+    return view('products.show', compact('product'));
+}
+
     // d. Ketentuan Hapus Data
     public function destroy(Product $product)
     {
