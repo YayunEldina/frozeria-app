@@ -33,13 +33,15 @@
                 </div>
             </div>
 
-            {{-- Tombol Dinamis di Sebelah Kanan --}}
             <div>
-                @if(request()->is('products*'))
-                    <a href="/products/create" class="border border-gray-500 px-4 py-1.5 text-sm rounded-none hover:bg-gray-700 transition">
+                {{-- Hanya muncul di halaman utama Daftar Barang (index) --}}
+                @if(request()->routeIs('products.index'))
+                    <a href="{{ route('products.create') }}" class="border border-gray-500 px-4 py-1.5 text-sm rounded-none hover:bg-gray-700 transition">
                         + Tambah Barang
                     </a>
-                @elseif(request()->is('categories*'))
+
+                {{-- Hanya muncul di halaman utama Daftar Kategori (index) --}}
+                @elseif(request()->routeIs('categories.index'))
                     <a href="{{ route('categories.create') }}" class="border border-gray-500 px-4 py-1.5 text-sm rounded-none hover:bg-gray-700 transition">
                         + Tambah Kategori
                     </a>
