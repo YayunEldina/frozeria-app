@@ -30,7 +30,9 @@ class ProductController extends Controller
         $categories = Category::all();
 
         // g. Card 'Stok Menipis': jumlah barang yang stoknya < 20
-        $stokMenipis = Product::where('stock', '>', 0)->where('stock', '<', 20)->count();
+        $stokMenipis = Product::where('stock', '>', 0)
+        ->whereColumn('stock', '<=', 'min_stock')
+        ->count();
 
         // h. Card 'Stok Habis': jumlah barang yang stoknya 0
         $stokHabis = Product::where('stock', 0)->count();
@@ -58,11 +60,16 @@ public function create()
 public function store(Request $request)
 {
     $request->validate([
-        'name' => 'required',
-        'category_id' => 'required',
-        'stock' => 'required|numeric',
-        'unit' => 'required',
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'unit' => 'required|string',
+        'stock' => 'required|integer',
+        'min_stock' => 'nullable|integer', 
         'price' => 'required|numeric',
+        'purchase_price' => 'nullable|numeric', 
+        'weight' => 'nullable|string',          
+        'location' => 'nullable|string',        
+        'description' => 'nullable|string',     
         'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
     ]);
 
@@ -109,12 +116,10 @@ public function update(Request $request, Product $product)
 
     // 3. Logika Upload Foto
     if ($request->hasFile('image')) {
-        // Hapus foto lama jika ada di storage
+        
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
-        
-        // Simpan foto baru
         $data['image'] = $request->file('image')->store('products', 'public');
     }
 
@@ -134,6 +139,10 @@ public function show(Product $product)
     // d. Ketentuan Hapus Data
     public function destroy(Product $product)
     {
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+    
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Barang berhasil dihapus');
     }

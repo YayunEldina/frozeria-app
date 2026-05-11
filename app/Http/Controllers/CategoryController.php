@@ -21,7 +21,7 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories', 'totalCategories'));
     }
 
-    // Tambahkan fungsi ini di dalam CategoryController
+   
 public function create()
 {
     return view('categories.create'); 
@@ -49,22 +49,19 @@ public function update(Request $request, Category $category)
 {
     $request->validate([
         'name' => 'required|max:255|unique:categories,name,' . $category->id,
-        'description' => 'nullable|string' // Pastikan deskripsi divalidasi juga (opsional)
+        'description' => 'nullable|string' 
     ]);
 
-    $category->update($request->all()); // Ini akan mengambil semua input termasuk description
+    $category->update($request->all()); 
 
     return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui!');
 }
 
-    public function destroy(Category $category)
-    {
-        // Cek jika masih ada produk di kategori ini (opsional)
-        if ($category->products()->count() > 0) {
-            return redirect()->back()->with('error', 'Kategori tidak bisa dihapus karena masih memiliki barang.');
-        }
-
-        $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus.');
-    }
+public function destroy(Category $category)
+{
+    $category->products()->update(['category_id' => null]);
+    $category->delete();
+    
+    return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus dan barang kini tidak berkategori.');
+}
 }

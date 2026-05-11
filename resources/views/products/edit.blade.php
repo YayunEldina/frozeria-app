@@ -83,8 +83,16 @@
                 <div class="space-y-2">
                     <label class="text-sm text-gray-600">Kategori <span class="text-red-500">*</span></label>
                     <select name="category_id" class="w-full text-sm border border-gray-300 px-4 py-2 focus:border-gray-500 focus:outline-none bg-white" required>
+                        
+                        {{-- 1. Tambahkan opsi default jika kategori kosong (NULL) --}}
+                        <option value="" {{ is_null($product->category_id) ? 'selected' : '' }} disabled>
+                            -- Pilih Kategori --
+                        </option>
+
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                            <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>

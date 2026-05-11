@@ -9,22 +9,22 @@ class Product extends Model
 {
     use HasFactory;
 
-    // Tambahkan kolom baru di sini agar bisa disimpan (Mass Assignment)
+   
     protected $fillable = [
         'name', 
         'category_id', 
         'stock', 
-        'min_stock', // Tambahan
+        'min_stock', 
         'unit', 
         'price', 
-        'purchase_price', // Tambahan
-        'weight', // Tambahan (Berat/ukuran)
-        'location', // Tambahan (Lokasi Simpan)
-        'description', // Tambahan
-        'image' // Tambahan (Foto Barang)
+        'purchase_price', 
+        'weight', 
+        'location', 
+        'description', 
+        'image' 
     ];
 
-    // Relasi ke Category
+   
     public function category()
     {
         return $this->belongsTo(Category::class);

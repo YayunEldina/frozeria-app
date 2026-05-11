@@ -54,7 +54,7 @@
                     Batal
                 </button>
                 
-                <form :action="'/categories/' + categoryId" method="POST" class="inline">
+                <form :action="'{{ url('categories') }}/' + categoryId" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="w-full inline-flex justify-center rounded-md border border-red-300 px-4 py-2 bg-white text-red-700 hover:bg-red-50 sm:w-auto sm:text-sm">

@@ -39,9 +39,9 @@
                 @endforeach
             </select>
         </div>
-        <button type="submit" class="bg-[#1a1d21] text-white px-6 py-2 rounded-none hover:bg-gray-800 transition">
+        <!-- <button type="submit" class="bg-[#1a1d21] text-white px-6 py-2 rounded-none hover:bg-gray-800 transition">
             Cari
-        </button>
+        </button> -->
     </form>
 
     {{-- Tabel Produk --}}
@@ -63,7 +63,7 @@
                     <td class="px-6 py-4 text-sm text-gray-800">{{ $product->name }}</td>
                     <td class="px-6 py-4">
                         <span class="border border-gray-300 px-3 py-1 text-xs rounded-none bg-gray-50">
-                            {{ $product->category->name ?? 'Tanpa Kategori' }}
+                            {{ $product->category->name ?? 'Tidak Berkategori' }}
                         </span>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-800">{{ $product->stock }}</td>
@@ -74,11 +74,11 @@
                         <a href="{{ route('products.edit', $product->id) }}" class="border border-blue-300 text-blue-600 px-3 py-1 text-xs rounded-none hover:bg-blue-50">Edit</a>
                         
                         <button 
-    type="button"
-    @click.prevent.stop="$dispatch('open-delete-modal', { id: '{{ $product->id }}', name: '{{ addslashes($product->name) }}' })" 
-    class="border border-red-300 text-red-600 px-3 py-1 text-xs rounded-none hover:bg-red-50 relative z-10">
-    Hapus
-</button>
+                            type="button"
+                            @click.prevent.stop="$dispatch('open-delete-modal', { id: '{{ $product->id }}', name: '{{ addslashes($product->name) }}' })" 
+                            class="border border-red-300 text-red-600 px-3 py-1 text-xs rounded-none hover:bg-red-50 relative z-10">
+                            Hapus
+                        </button>
                     </td>
                 </tr>
                 @empty
