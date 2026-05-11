@@ -14,13 +14,20 @@
             @method('PUT')
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Nama kategori *</label>
-                <input type="text" name="name" value="{{ old('name', $category->name) }}" required
-                       class="w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-gray-500">
+                <input type="text" 
+                       name="name" 
+                       value="{{ old('name', $category->name) }}" 
+                       required
+                       oninvalid="this.setCustomValidity('Data wajib diisi')" 
+                       oninput="this.setCustomValidity('')"
+                       class="w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-gray-500 @error('name') border-red-500 @enderror">
+                @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi (opsional)</label>
-                <textarea name="description" rows="4" class="w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-gray-500">{{ old('description', $category->description) }}</textarea>
+                <textarea name="description" rows="4" 
+                          class="w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-gray-500">{{ old('description', $category->description) }}</textarea>
             </div>
 
             <div class="flex justify-end gap-3 pt-4">

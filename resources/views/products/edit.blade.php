@@ -17,61 +17,55 @@
             @method('PUT')
 
             {{-- Area Upload Foto --}}
-<div class="space-y-2">
-    <label class="text-sm font-medium text-gray-700 tracking-wider">Foto barang</label>
-    
-    <div x-data="{ 
-            fileName: null, 
-            previewUrl: '{{ $product->image ? asset('storage/' . $product->image) : '' }}' 
-         }" 
-         class="border-2 border-dashed border-gray-300 p-10 text-center relative hover:bg-gray-50 transition w-full min-h-[250px] flex flex-col items-center justify-center">
-        
-        {{-- Input File --}}
-        <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-               @change="
-                if ($event.target.files.length > 0) {
-                    fileName = $event.target.files[0].name;
-                    const reader = new FileReader();
-                    reader.onload = (e) => { previewUrl = e.target.result };
-                    reader.readAsDataURL($event.target.files[0]);
-                }
-               ">
-        
-        <div class="space-y-3">
-            {{-- 1. Preview Gambar (Muncul jika ada foto lama ATAU foto baru) --}}
-            <div class="flex flex-col items-center gap-2">
-                <template x-if="previewUrl">
-                    <img :src="previewUrl" class="max-h-32 object-contain border border-gray-200 shadow-sm rounded bg-white">
-                </template>
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-gray-700 tracking-wider">Foto barang</label>
                 
-                {{-- Icon jika benar-benar tidak ada gambar sama sekali --}}
-                <template x-if="!previewUrl">
-                    <svg class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </template>
+                <div x-data="{ 
+                        fileName: null, 
+                        previewUrl: '{{ $product->image ? asset('storage/' . $product->image) : '' }}' 
+                     }" 
+                     class="border-2 border-dashed border-gray-300 p-10 text-center relative hover:bg-gray-50 transition w-full min-h-[250px] flex flex-col items-center justify-center">
+                    
+                    <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                           @change="
+                            if ($event.target.files.length > 0) {
+                                fileName = $event.target.files[0].name;
+                                const reader = new FileReader();
+                                reader.onload = (e) => { previewUrl = e.target.result };
+                                reader.readAsDataURL($event.target.files[0]);
+                            }
+                           ">
+                    
+                    <div class="space-y-3">
+                        <div class="flex flex-col items-center gap-2">
+                            <template x-if="previewUrl">
+                                <img :src="previewUrl" class="max-h-32 object-contain border border-gray-200 shadow-sm rounded bg-white">
+                            </template>
+                            
+                            <template x-if="!previewUrl">
+                                <svg class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </template>
 
-                {{-- 2. Nama File (Hanya muncul jika user memilih file BARU) --}}
-                <template x-if="fileName">
-                    <p class="text-xs text-gray-400 font-normal mt-1" x-text="fileName"></p>
-                </template>
-            </div>
+                            <template x-if="fileName">
+                                <p class="text-xs text-gray-400 font-normal mt-1" x-text="fileName"></p>
+                            </template>
+                        </div>
 
-            {{-- 3. Teks Instruksi & Format (Selalu Ada) --}}
-            <div class="space-y-1">
-                <p class="text-sm text-gray-600">Klik untuk mengganti foto, atau seret file ke sini</p>
-                <p class="text-xs text-gray-400">Format: JPG, PNG — Maks. 2 MB</p>
-            </div>
+                        <div class="space-y-1">
+                            <p class="text-sm text-gray-600">Klik untuk mengganti foto, atau seret file ke sini</p>
+                            <p class="text-xs text-gray-400">Format: JPG, PNG — Maks. 2 MB</p>
+                        </div>
 
-            {{-- 4. Tombol Visual --}}
-            <div class="pt-2">
-                <button type="button" class="border border-gray-300 px-4 py-1.5 text-xs font-medium bg-white hover:bg-gray-50 tracking-wider">
-                    Pilih Foto
-                </button>
+                        <div class="pt-2">
+                            <button type="button" class="border border-gray-300 px-4 py-1.5 text-xs font-medium bg-white hover:bg-gray-50 tracking-wider">
+                                Pilih Foto
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
             {{-- Grid Input --}}
             <div class="grid grid-cols-2 gap-6">
@@ -83,12 +77,7 @@
                 <div class="space-y-2">
                     <label class="text-sm text-gray-600">Kategori <span class="text-red-500">*</span></label>
                     <select name="category_id" class="w-full text-sm border border-gray-300 px-4 py-2 focus:border-gray-500 focus:outline-none bg-white" required>
-                        
-                        {{-- 1. Tambahkan opsi default jika kategori kosong (NULL) --}}
-                        <option value="" {{ is_null($product->category_id) ? 'selected' : '' }} disabled>
-                            -- Pilih Kategori --
-                        </option>
-
+                        <option value="" {{ is_null($product->category_id) ? 'selected' : '' }} disabled>-- Pilih Kategori --</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>
                                 {{ $cat->name }}
@@ -113,7 +102,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label class="text-sm text-gray-600">Harga jual (Rp)</label>
+                    <label class="text-sm text-gray-600">Harga jual (Rp) <span class="text-red-500">*</span></label>
                     <input type="number" name="price" value="{{ (int)$product->price }}" class="w-full border border-gray-300 px-4 py-2 focus:border-gray-500 focus:outline-none" required>
                 </div>
 
@@ -134,8 +123,8 @@
             </div>
 
             <div class="space-y-2">
-                <label class="text-sm text-gray-600">Deskripsi</label>
-                <textarea name="description" rows="3" class="w-full border border-gray-300 px-4 py-2 focus:border-gray-500 focus:outline-none">{{ $product->description }}</textarea>
+                <label class="text-sm text-gray-600">Deskripsi <span class="text-red-500">*</span></label>
+                <textarea name="description" rows="3" class="w-full border border-gray-300 px-4 py-2 focus:border-gray-500 focus:outline-none" required>{{ $product->description }}</textarea>
             </div>
 
             <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
@@ -145,4 +134,22 @@
         </form>
     </div>
 </div>
+
+{{-- SCRIPT OTOMATIS PESAN VALIDASI --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = document.querySelectorAll('[required]');
+        inputs.forEach(input => {
+            input.oninvalid = function(e) {
+                e.target.setCustomValidity("");
+                if (!e.target.validity.valid) {
+                    e.target.setCustomValidity("Data wajib diisi");
+                }
+            };
+            input.oninput = function(e) {
+                e.target.setCustomValidity("");
+            };
+        });
+    });
+</script>
 @endsection

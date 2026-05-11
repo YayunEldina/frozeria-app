@@ -53,7 +53,7 @@ class ProductController extends Controller
 public function create()
 {
     // Mengambil semua kategori untuk drop-down
-    $categories = \App\Models\Category::all(); 
+    $categories = Category::all(); 
     return view('products.create', compact('categories'));
 }
 
@@ -69,7 +69,7 @@ public function store(Request $request)
         'purchase_price' => 'nullable|numeric', 
         'weight' => 'nullable|string',          
         'location' => 'nullable|string',        
-        'description' => 'nullable|string',     
+        'description' => 'required|string',     
         'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
     ]);
 
@@ -80,7 +80,7 @@ public function store(Request $request)
         $data['image'] = $request->file('image')->store('products', 'public');
     }
 
-    \App\Models\Product::create($data);
+    Product::create($data);
 
     return redirect()->route('products.index')->with('success', 'Barang berhasil ditambahkan!');
 }
@@ -107,7 +107,7 @@ public function update(Request $request, Product $product)
         'purchase_price' => 'nullable|numeric',
         'weight' => 'nullable|string',
         'location' => 'nullable|string',
-        'description' => 'nullable|string',
+        'description' => 'required|string',
         'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
     ]);
 

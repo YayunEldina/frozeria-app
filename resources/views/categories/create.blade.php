@@ -13,8 +13,13 @@
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Nama kategori *</label>
-                <input type="text" name="name" required placeholder="Ayam"
-                       class="w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-gray-500 @error('name') border-red-500 @enderror">
+                <input type="text" 
+                        name="name" 
+                        required 
+                        placeholder="Ayam"
+                        oninvalid="this.setCustomValidity('Data wajib diisi')" 
+                        oninput="this.setCustomValidity('')"
+                        class="w-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-gray-500 @error('name') border-red-500 @enderror">
                 @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
