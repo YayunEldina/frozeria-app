@@ -9,7 +9,8 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Category::withCount('products'); // Mengambil jumlah barang otomatis
+        // 1. Tambahkan oldest() agar data terbaru muncul di paling bawah
+        $query = Category::withCount('products')->oldest(); 
 
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -33,7 +34,7 @@ public function store(Request $request)
         'name' => 'required|unique:categories,name|max:255'
     ]);
 
-    \App\Models\Category::create($request->all());
+    Category::create($request->all());
 
     return redirect()->route('categories.index')->with('success', 'Kategori berhasil ditambah!');
 }

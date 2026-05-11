@@ -29,7 +29,9 @@
                 <tr class="hover:bg-gray-50 transition">
                     <td class="px-6 py-4 text-sm text-gray-800 font-medium">{{ $category->name }}</td>
                     <td class="px-6 py-4 text-sm text-gray-600">{{ $category->products_count }} barang</td>
-                    <td class="px-6 py-4 text-sm text-gray-500">{{ $category->created_at->format('j M Y') }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        {{ $category->created_at->translatedFormat('d M Y') }}
+                    </td>
                     <td class="px-6 py-4 flex gap-2">
                         {{-- Tombol Edit --}}
                         <a href="{{ route('categories.edit', $category->id) }}" 
